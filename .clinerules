@@ -1,0 +1,57 @@
+# Cline Rules — The-Art-SampleGod
+
+## Project Overview
+
+- **Name:** The-Art-SampleGod
+- **Type:** Windows Sampler Instrument (VST3 + Standalone)
+- **Core Tech Stack:** C++20, JUCE 9.0.1, CMake (MSVC 2022 x64 target), PowerShell (`scripts/setup.ps1`, `scripts/build.ps1`).
+- **Dependencies:** JUCE is the ONLY third-party dependency (`cmake/JUCE.cmake`). Keep external dependencies to zero unless explicitly requested.
+
+---
+
+## Architectural & Coding Standards
+
+### 1. Dependency Discipline
+
+- Avoid introducing third-party C++ libraries. Rely strictly on standard C++20 and native JUCE modules.
+- Keep build scripts portable and focused on MSVC 2022 on Windows.
+
+### 2. Configuration Precedence
+
+Always respect the strict settings precedence:
+`Environment Variables > Local .env > User App Data (%APPDATA%\StiffMcGriff\The Art-SampleGod\samplegod.conf) > System Defaults`
+
+### 3. File System & Memory Safety
+
+- Never store application data, temporary caches, or logs inside the repo root directory.
+- Use `%APPDATA%\StiffMcGriff\The Art-SampleGod` for library indices, logs, and INI configuration files.
+- Maintain real-time audio thread safety: avoid memory allocations, blocking locks, or disk I/O in audio processing callbacks (`processBlock`).
+
+### 4. Repository Cleanliness
+
+- Never check in build outputs (`build/`, `build/win-x64/`), local `.env` files, or binary artifacts.
+- When packaging distribution archives, always export clean git-tracked files using `git archive` to prevent leaking uncommitted files or local caches.
+
+---
+
+## Workspace Structure
+
+- `src/` — C++ source files (VST3 / Standalone audio logic, UI components, waveform display, polyphonic voice engine).
+- `cmake/` — Build setup scripts (e.g., `cmake/JUCE.cmake`).
+- `scripts/` — PowerShell automation scripts (`setup.ps1`, `build.ps1`).
+- `docs/` — Core documentation:
+  - `docs/ARCHITECTURE.md` — Module graph, data flow, blueprints.
+  - `docs/BUILD_GUIDE.md` — Full Windows build instructions.
+  - `docs/HANDOFF.md` — Maintainer handoff guide.
+- `.github/workflows/` — Windows CI build actions (`windows-build.yml`).
+
+---
+
+## Development Workflow Commands
+
+### Setup Environment
+
+```powershell
+Copy-Item .env.example .env
+.\scripts\setup.ps1
+```
