@@ -6,7 +6,6 @@ class Sample {
 public:
     bool load(const juce::File& file);
     double getDuration() const;
-private:
     juce::AudioBuffer<float> buffer;
 };
 }

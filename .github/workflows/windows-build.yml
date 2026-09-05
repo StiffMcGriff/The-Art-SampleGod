@@ -12,6 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Cache JUCE / CMake
+        uses: actions/cache@v4
+        with:
+          path: |
+            build/
+            deps/
+          key: ${{ runner.os }}-cmake-${{ hashFiles('CMakeLists.txt', 'cmake/*.cmake') }}
+
       - name: Setup MSVC 2022
         uses: ilammy/msvc-dev-cmd@v1
 
@@ -19,12 +27,17 @@ jobs:
         run: cmake --preset win-x64
 
       - name: Build VST3 + Standalone (Release)
-        run: cmake --build --preset release --config Release
+        run: cmake --build --preset release --config Release --parallel
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: samplegod-windows
-          path: |
-            build/win-x64/Release/*.vst3
-            build/win-x64/Release/*.exe
+          name: samplegod-windows-release
+          path: build/win-x64/Release/*.vst3
+
+      - name: Upload standalone
+        uses: actions/upload-artifact@v4
+        if: failure() == false
+        with:
+          name: samplegod-standalone-release
+          path: build/win-x64/Release/*.exe

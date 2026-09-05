@@ -4,10 +4,16 @@
 namespace SampleGod {
 class SamplerVoice {
 public:
-    void noteOn(int midiNote, float velocity);
+    bool isActive() const { return active; }
+    void noteOn(const Sample* s, int midiNote, float velocity);
+    void noteOff();
     void renderNextBlock(juce::AudioBuffer<float>& buffer, int startSample, int numSamples);
 private:
-    Sample sample;
+    const Sample* sample = nullptr;
+    bool active = false;
+    int midiNote = 0;
+    float velocity = 0.f;
     juce::ADSR adsr;
+    int position = 0;
 };
 }
