@@ -8,9 +8,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # JUCE dependency lock (pinned 9.0.1)
 include(cmake/JUCE.cmake)
 
-# Source tree
-juce_add_module(Source)
-
 # Plugin targets (VST3 + Standalone)
 juce_add_plugin(TheArtSampleGod
     PLUGIN_FORMATS VST3 Standalone
@@ -42,6 +39,17 @@ target_sources(TheArtSampleGod PRIVATE
 )
 
 target_include_directories(TheArtSampleGod PRIVATE Source/)
+
+# Link required JUCE modules used by source
+if(TARGET juce::juce_audio_formats)
+    target_link_libraries(TheArtSampleGod PRIVATE juce::juce_audio_formats)
+endif()
+if(TARGET juce::juce_dsp)
+    target_link_libraries(TheArtSampleGod PRIVATE juce::juce_dsp)
+endif()
+if(TARGET juce::juce_gui_extra)
+    target_link_libraries(TheArtSampleGod PRIVATE juce::juce_gui_extra)
+endif()
 
 # Windows-specific settings
 if(MSVC)
