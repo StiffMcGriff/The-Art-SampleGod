@@ -11,5 +11,6 @@ void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiB
     engine.renderNextBlock(buffer, midi, 0, buffer.getNumSamples());
 }
 juce::AudioProcessorEditor* PluginProcessor::createEditor() { return new PluginEditor(*this); }
-juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter() { return new PluginProcessor(); }
 }
+
+juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter() { return new SampleGod::PluginProcessor(); }

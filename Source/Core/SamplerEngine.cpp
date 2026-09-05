@@ -20,10 +20,10 @@ void SamplerEngine::noteOff(int midiNote) {
     }
 }
 void SamplerEngine::renderNextBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midi, int startSample, int numSamples) {
-    buffer.clear(startSample, numSamples);
+    buffer.clear();
     for (auto it = midi.begin(); it != midi.end(); ++it) {
         auto msg = it->getMessage();
-        if (msg.isNoteOn()) noteOn(msg.getNoteNumber(), msg.getFloatVelocity());
+        if (msg.isNoteOn()) noteOn(msg.getNoteNumber(), msg.getVelocity() / 127.0f);
         else if (msg.isNoteOff()) noteOff(msg.getNoteNumber());
     }
     for (auto& v : voices) {
