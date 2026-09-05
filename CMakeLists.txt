@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(TheArtSampleGod VERSION 1.0.0 LANGUAGES CXX)
+project(TheArtSampleGod VERSION 1.0.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -8,9 +8,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # JUCE dependency lock (pinned 9.0.1)
 include(cmake/JUCE.cmake)
 
-# Plugin targets (VST3 + Standalone)
 juce_add_plugin(TheArtSampleGod
-    PLUGIN_FORMATS VST3 Standalone
+    PLUGIN_MANUFACTURER_CODE Juce
+    PLUGIN_CODE Sam1
+    FORMATS VST3 Standalone
     PRODUCT_NAME "The Art-SampleGod"
     VERSION ${PROJECT_VERSION}
     COMPANY_NAME "StiffMcGriff"
@@ -40,16 +41,16 @@ target_sources(TheArtSampleGod PRIVATE
 
 target_include_directories(TheArtSampleGod PRIVATE Source/)
 
-# Link required JUCE modules used by source
-if(TARGET juce::juce_audio_formats)
-    target_link_libraries(TheArtSampleGod PRIVATE juce::juce_audio_formats)
-endif()
-if(TARGET juce::juce_dsp)
-    target_link_libraries(TheArtSampleGod PRIVATE juce::juce_dsp)
-endif()
-if(TARGET juce::juce_gui_extra)
-    target_link_libraries(TheArtSampleGod PRIVATE juce::juce_gui_extra)
-endif()
+target_link_libraries(TheArtSampleGod
+    PRIVATE
+        juce::juce_audio_utils
+        juce::juce_audio_formats
+        juce::juce_dsp
+        juce::juce_gui_extra
+    PUBLIC
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_lto_flags
+        juce::juce_recommended_warning_flags)
 
 # Windows-specific settings
 if(MSVC)
