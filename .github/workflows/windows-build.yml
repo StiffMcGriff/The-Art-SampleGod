@@ -23,6 +23,13 @@ jobs:
       - name: Setup MSVC 2022
         uses: ilammy/msvc-dev-cmd@v1
 
+      - name: Clone JUCE 9.0.1 (if not cached)
+        shell: bash
+        run: |
+          if [ ! -d "deps/JUCE" ]; then
+            git clone --branch 9.0.1 --depth 1 https://github.com/juce-framework/JUCE.git deps/JUCE
+          fi
+
       - name: Configure CMake
         run: cmake --preset win-x64
 
