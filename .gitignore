@@ -1,0 +1,27 @@
+# Build outputs
+build/
+build-win-x64/
+win-x64/
+
+# Local environment / config
+.env
+*.conf
+*.ini
+
+# Dependencies (vendored by scripts)
+deps/JUCE/
+
+# OS / editor
+.DS_Store
+*.swp
+*.swo
+*~
+.idea/
+.vs/
+.vscode/
+
+# Distribution archives (generated; do not commit binaries)
+*.zip
+*.exe
+*.vst3
+*.dll

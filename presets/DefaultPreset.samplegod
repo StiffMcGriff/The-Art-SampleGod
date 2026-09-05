@@ -1,0 +1,6 @@
+{
+  "name": "DefaultPreset",
+  "envelope": { "attackMs": 10, "decayMs": 100, "sustain": 0.7, "releaseMs": 250 },
+  "keymap": { "rootNote": 60, "lowestNote": 24, "highestNote": 108, "velocityMin": 1, "velocityMax": 127 },
+  "masterGainDb": 0.0
+}
