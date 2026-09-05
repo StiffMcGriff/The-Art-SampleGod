@@ -8,9 +8,20 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # JUCE dependency lock (pinned 9.0.1)
 include(cmake/JUCE.cmake)
 
-# juce_add_plugin temporarily disabled for diagnostic
-add_library(TheArtSampleGod STATIC Source/PluginProcessor.cpp Source/PluginEditor.cpp)
-# target_include_directories(TheArtSampleGod PRIVATE Source/)
+juce_add_plugin(TheArtSampleGod
+    PLUGIN_MANUFACTURER_CODE Juce
+    PLUGIN_CODE Sam1
+    FORMATS VST3 Standalone
+    PRODUCT_NAME "The Art-SampleGod"
+    VERSION ${PROJECT_VERSION}
+    COMPANY_NAME "StiffMcGriff"
+    WEBSITE_URL "https://github.com/StiffMcGriff/The-Art-SampleGod"
+    IS_SYNTH TRUE
+    NEEDS_MIDI_INPUT TRUE
+    NEEDS_MIDI_OUTPUT FALSE
+    COPY_PLUGIN_AFTER_BUILD TRUE
+    VST3_CAN_RESIZE TRUE
+)
 
 target_sources(TheArtSampleGod PRIVATE
     Source/PluginProcessor.cpp
